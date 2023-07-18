@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageOps
 
 
 '''
@@ -30,7 +30,7 @@ def make_40_cut(file_hash):
     cnt = 0
     for i in range(5):
         for j in range(8):
-            image = Image.open("./images/" + file_hash + "/" + str(cnt) + ".png")
+            image = ImageOps.mirror(Image.open("./images/" + file_hash + "/" + str(cnt) + ".png"))
             crop_width = image.height * image_size[0] / image_size[1]
             image = image.crop(((image.width - crop_width)/2, 0, (image.width + crop_width)/2, image.height))
             image = image.resize((image_size[0], image_size[1]))
@@ -54,7 +54,7 @@ def make_4_cut(file_hash):
 
     for i in range(4):
         for j in range(2):
-            image = Image.open("./images/" + file_hash + "/" + str(i) + ".png")
+            image = ImageOps.mirror(Image.open("./images/" + file_hash + "/" + str(i) + ".png"))
             crop_width = image.height * image_size[0] / image_size[1]
             image = image.crop(((image.width - crop_width)/2, 0, (image.width + crop_width)/2, image.height))
             image = image.resize((image_size[0], image_size[1]))

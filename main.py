@@ -1,6 +1,7 @@
 import random
 
 import cv2, os
+from PIL import Image
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 from werkzeug.utils import secure_filename
 import qrcode
@@ -50,9 +51,14 @@ def get_pdf(file_hash):
 @app.route('/qr/<file_hash>', methods=['GET'])
 def get_qr(file_hash):
     with open("./images/" + file_hash + "/qr.png", "wb") as f:
-        qrcode.make(request.root_url + "image/" + file_hash).save(f, "PNG")
+        qrcode.make(request.root_url + "download/" + file_hash).save(f, "PNG")
 
     return send_from_directory("./images/" + file_hash, "qr.png")
+
+
+@app.route('/download/<file_hash>', methods=['GET'])
+def get_download(file_hash):
+    return render_template("download.html", file_hash=file_hash)
 
 
 def get_frame(file_hash, frame_count):
@@ -61,7 +67,6 @@ def get_frame(file_hash, frame_count):
     while v_cap.isOpened():
         ret, image = v_cap.read()
         if ret:
-            image = cv2.resize(image, (1920, 1080))
             frames.append(image)
         else:
             break
