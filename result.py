@@ -39,16 +39,16 @@ def make_40_cut(file_hash):
             cnt += 1
 
     original_image.save("./images/" + file_hash + "/output.png")
+    original_image.save("./images/" + file_hash + "/output.pdf")
     return "./images/" + file_hash + "/output.png"
 
 
 def make_4_cut(file_hash):
-    original_image_path = "./images/4.png"
     start_point = [57, 114]
     image_size = [633 - 57, 576 - 114]
     padding = [111, 10]
 
-    frame_image_path = "./images/4.png"
+    frame_image_path = "./images/4frame.png"
     frame_image = Image.open(frame_image_path)
     original_image = Image.new("RGBA", (frame_image.width, frame_image.height), (255, 255, 255, 0))
 
@@ -64,8 +64,9 @@ def make_4_cut(file_hash):
     # mask if frame pixel's alpha is not 0
     for i in range(frame_image.width):
         for j in range(frame_image.height):
-            if frame_image.getpixel((i, j))[3] != 0:
+            if frame_image.getpixel((i, j))[3] >= 200:
                 original_image.putpixel((i, j), frame_image.getpixel((i, j)))
 
     original_image.save("./images/" + file_hash + "/output.png")
+    original_image.save("./images/" + file_hash + "/output.pdf")
     return "./images/" + file_hash + "/output.png"
