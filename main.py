@@ -19,7 +19,7 @@ def upload_40_cut():
         return "error"
 
     f = request.files['file']
-    file_hash = str(hash(f))[:5] + str(time.time()) + str(random.randint(0, 100000))
+    file_hash = str(hash(f))[:3] + str(int(time.time())) + str(random.randint(0, 10000))
     f.save("./videos/" + secure_filename(file_hash + ".webm"))
     frames = get_frame(file_hash, cut_count)
     print(len(frames))
@@ -71,7 +71,7 @@ def get_frame(file_hash, frame_count):
             frames.append(image)
         else:
             break
-
+    frames = frames[len(frames) // 3:]
     if frame_count == 40:
         return random.sample(frames, frame_count)
     else:
