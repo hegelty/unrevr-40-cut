@@ -1,4 +1,5 @@
 import random
+import time
 
 import cv2, os
 from PIL import Image
@@ -18,7 +19,7 @@ def upload_40_cut():
         return "error"
 
     f = request.files['file']
-    file_hash = str(hash(f))
+    file_hash = str(hash(f))[:5] + str(time.time()) + str(random.randint(0, 100000))
     f.save("./videos/" + secure_filename(file_hash + ".webm"))
     frames = get_frame(file_hash, cut_count)
     print(len(frames))
